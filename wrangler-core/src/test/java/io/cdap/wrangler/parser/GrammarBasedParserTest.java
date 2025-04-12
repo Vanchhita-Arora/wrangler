@@ -21,9 +21,13 @@ import io.cdap.wrangler.api.CompileStatus;
 import io.cdap.wrangler.api.Compiler;
 import io.cdap.wrangler.api.Directive;
 import io.cdap.wrangler.api.RecipeParser;
+import io.cdap.wrangler.executor.MigrateToV2;
+import io.cdap.wrangler.executor.RecipeCompiler;
+import io.cdap.wrangler.executor.RecipePipelineExecutor;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +37,7 @@ public class GrammarBasedParserTest {
 
   @Test
   public void testBasic() throws Exception {
-    String[] recipe = new String[] {
+    String[] recipe = new String[]{
       "#pragma version 2.0;",
       "rename :col1 :col2",
       "parse-as-csv :body ',' true;",
@@ -49,7 +53,7 @@ public class GrammarBasedParserTest {
 
   @Test
   public void testLoadableDirectives() throws Exception {
-    String[] recipe = new String[] {
+    String[] recipe = new String[]{
       "#pragma version 2.0;",
       "#pragma load-directives text-reverse, text-exchange;",
       "rename col1 col2",
@@ -66,7 +70,7 @@ public class GrammarBasedParserTest {
 
   @Test
   public void testCommentOnlyRecipe() throws Exception {
-    String[] recipe = new String[] {
+    String[] recipe = new String[]{
       "// test"
     };
 
@@ -75,4 +79,29 @@ public class GrammarBasedParserTest {
     Assert.assertEquals(0, directives.size());
   }
 
+  // ✅ NEW TESTS ADDED BELOW
+
+  @Test
+  public void testByteSizeParsing() throws Exception {
+    String[] directives = new String[]{
+      "set-column :test '10KB'",
+      "set-column :test '5MB'",
+      "set-column :test '1GB'"
+    };
+
+    RecipePipelineExecutor pipeline = TestingRig.execute(directives, new ArrayList<>());
+    Assert.assertEquals(0, pipeline.rows().size());
+  }
+
+  @Test
+  public void testTimeDurationParsing() throws Exception {
+    String[] directives = new String[]{
+      "set-column :test '100ms'",
+      "set-column :test '5s'",
+      "set-column :test '1m'"
+    };
+
+    RecipePipelineExecutor pipeline = TestingRig.execute(directives, new ArrayList<>());
+    Assert.assertEquals(0, pipeline.rows().size());
+  }
 }

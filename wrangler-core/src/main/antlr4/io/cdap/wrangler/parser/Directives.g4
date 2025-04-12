@@ -140,7 +140,7 @@ numberRange
  ;
 
 value
- : String | Number | Column | Bool
+ : String | Number | Column | Bool | NULL | BYTE_SIZE | TIME_DURATION
  ;
 
 ecommand
@@ -281,6 +281,17 @@ EscapeSequence
    ;
 
 fragment
+BYTE_UNIT: [kKmMgG][bB];
+BYTE_SIZE:NUMBER BYTE_UNIT;
+
+fragment
+TIME_UNIT:'ns' | 'us' | 'ms' | 's' | 'm' | 'h' | 'd' ;
+TIME_DURATION:NUMBER TIME_UNIT;
+
+fragment
+NUMBER:[0-9]+('.' [0-9]+)?;
+
+fragment
 OctalEscape
    :   '\\' ('0'..'3') ('0'..'7') ('0'..'7')
    |   '\\' ('0'..'7') ('0'..'7')
@@ -298,6 +309,10 @@ fragment
 Comment
  : ('//' ~[\r\n]* | '/*' .*? '*/' | '--' ~[\r\n]* ) -> skip
  ;
+
+byteSizeValue: BYTE_SIZE;
+
+timeDurationValue:TIME_DURATION;
 
 Space
  : [ \t\r\n\u000C]+ -> skip

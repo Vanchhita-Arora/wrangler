@@ -76,6 +76,8 @@ public enum TokenType implements Serializable {
    */
   BOOLEAN,
 
+  BYTE_SIZE,
+
   /**
    * Represents the enumerated type for the object of type {@code BoolList} type.
    * This type is associated with the rule that is a collection of {@code Boolean} values
@@ -147,6 +149,8 @@ public enum TokenType implements Serializable {
    * </code>
    */
   RANGES,
+
+  TIME_DURATION,
 
   /**
    * Represents the enumerated type for the object of type {@code String} with restrictions

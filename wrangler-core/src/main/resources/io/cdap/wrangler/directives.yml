@@ -1,0 +1,4 @@
+- class: io.cdap.wrangler.executor.AggregateStats
+  name: aggregate-stats
+  category: Aggregate
+  description: Aggregates byte size and time duration columns with unit conversion
