@@ -258,3 +258,7 @@ aggregate-stats <size_column> <time_column> <output_size_col> <output_time_col> 
 Supported aggregation types: `total` (default), `average`
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5c3f0347cc597af7d98c8ea8673cfe97b2cb48db
